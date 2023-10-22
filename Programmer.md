@@ -19,3 +19,8 @@
     - Redux, SWC, axios, and lucide-react
 
 ---
+
+### 10-22-23
+
+- **Realizations**
+  - The `Dashboard` page have too much `fixed` height and width
