@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Trial from './pages/trial';
+import { BrowserRouter } from 'react-router-dom';
 import './assets/styles/index.css';
-
+import App from './App.jsx';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
 ReactDOM.createRoot(document.getElementById('root')).render(
-	<React.StrictMode>
-		<Trial />
-	</React.StrictMode>
+	<Provider store={store}>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</Provider>
 );
