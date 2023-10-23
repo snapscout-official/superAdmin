@@ -1,5 +1,4 @@
-import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import useAuth from '../context/useAuth';
 import Unauthorized from '../components/modal/Index';
 import Layout from '../layouts/Login';
@@ -8,37 +7,15 @@ import Button from '../components/Fields/Button';
 import PasswordInput from '../components/Fields/Password';
 
 export default function Login() {
-	const navigate = useNavigate();
-	const [isUnauthorized, setIsUnauthorized] = useState(false);
-	const [message, setMessage] = useState('');
-	const emailRef = useRef();
-	const passwordRef = useRef();
-	const { login } = useAuth();
-	const toggleClose = () => {
-		setIsUnauthorized(false);
-	};
+	const {
+		isUnauthorized,
+		message,
+		emailRef,
+		passwordRef,
+		toggleClose,
+		submitForm,
+	} = useAuth();
 
-	const submitForm = async (e) => {
-		e.preventDefault();
-		try {
-			const authStatus = await login(
-				emailRef.current.value,
-				passwordRef.current.value
-			);
-			console.log();
-			if (authStatus.success) {
-				// Check if authStatus is true before navigating
-				navigate('/dashboard');
-			} else {
-				setMessage(authStatus.message);
-				emailRef.current.value = '';
-				passwordRef.current.value = '';
-				setIsUnauthorized(true);
-			}
-		} catch (error) {
-			console.log(error); // Handle error
-		}
-	};
 	return (
 		<Layout>
 			{isUnauthorized && (

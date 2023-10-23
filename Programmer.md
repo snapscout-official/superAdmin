@@ -24,3 +24,10 @@
 
 - **Realizations**
   - The `Dashboard` page have too much `fixed` height and width
+  - `Writing` the `software` using `pen and paper` is `helpful`
+
+---
+
+### 10-23-23
+
+- **Realizations**

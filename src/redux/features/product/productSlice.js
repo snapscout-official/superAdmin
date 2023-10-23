@@ -10,7 +10,6 @@ const initialState = {
 		selectedSub: null,
 		selectedThird: null,
 	},
-	hasTrigger: false,
 };
 
 export const productSlice = createSlice({
@@ -23,12 +22,9 @@ export const productSlice = createSlice({
 		setProductData: (state, action) => {
 			state.productData = { ...state.productData, ...action.payload };
 		},
-		setTrigger: (state) => {
-			state.hasTrigger = !state.hasTrigger;
-		},
 	},
 });
 
-export const { setProdInfo, setProductData, setTrigger } = productSlice.actions;
+export const { setProdInfo, setProductData } = productSlice.actions;
 
 export default productSlice.reducer;
