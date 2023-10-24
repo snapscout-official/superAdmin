@@ -4,7 +4,7 @@ import {
 	setInfo,
 	setCategoryData,
 } from '../redux/features/category/categorySlice';
-import useAuth from './useAuth';
+import useAuth from '../context/useAuth';
 
 export const useCategory = () => {
 	const data = useSelector((state) => state.category.categoryData);
@@ -12,48 +12,62 @@ export const useCategory = () => {
 	const { instance } = useAuth();
 	const dispatch = useDispatch();
 	const url = import.meta.env.VITE_URL;
+
 	const [rows, setRows] = useState([]);
 	const [isNewCategory, setIsNewCategory] = useState(false);
 	const fieldRef = useRef(null);
 	const [filteredRows, setFilteredRows] = useState([]);
 	const [isDeleteItem, setIsDeleteItem] = useState(false);
-	const [category, setCategory] = useState();
+	const [category, setCategory] = useState('');
+
 	const searchTermRef = useRef('');
 
 	const toggleCategory = () => {
 		setIsNewCategory(!isNewCategory);
 	};
 
+	const fetchCategory = async () => {
+		try {
+			const response = await instance.get(`${url}create-category`);
+			dispatch(
+				setCategoryData({
+					thirdCategories: response.data.thirdCategories,
+					subCategories: response.data.subCategories,
+					categories: response.data.parentCategories,
+				})
+			);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
-		instance
-			.get(`${url}create-category`)
-			.then((res) => {
-				dispatch(
-					setCategoryData({
-						thirdCategories: res.data.thirdCategories,
-						subCategories: res.data.subCategories,
-						categories: res.data.parentCategories,
-					})
-				);
-			})
-			.catch((err) => console.log(err));
+		fetchCategory();
 	}, [isNewCategory, isDeleteItem]);
 
 	const onSubmit = (event) => {
 		event.preventDefault();
-
-		// ... (your existing validation and submission logic here)
-
 		instance
 			.post(`${url}create-category`, {
 				parentCategory: info.selectedParent,
 				subCategory: info.selectedSub,
 				thirdCategory: info.selectedThird,
 			})
-			.then(() => {
-				setIsNewCategory(false);
+			.then(() => fetchCategory())
+			.catch((err) => {
+				console.log(err);
+			});
+
+		fieldRef.current.value = '';
+		dispatch(
+			setInfo({
+				selectedType: '',
+				selectedParent: '',
+				selectedSub: '',
+				selectedThird: '',
 			})
-			.catch((err) => console.log(err));
+		);
+		setIsNewCategory(false);
 	};
 
 	const handleUndo = () => {
@@ -69,10 +83,9 @@ export const useCategory = () => {
 		setIsNewCategory(false);
 	};
 
-	const dataProcessor = () => {
+	const dataProcessor = (data) => {
 		const newRows = [];
 
-		// First, add all parent categories
 		data?.categories?.forEach((parentCat) => {
 			newRows.push({
 				id: parentCat.parent_id,
@@ -82,7 +95,7 @@ export const useCategory = () => {
 				catLevel: 1,
 			});
 		});
-		// Then, add sub categories
+
 		data?.subCategories?.forEach((subCat) => {
 			newRows.push({
 				id: subCat.sub_id,
@@ -92,6 +105,7 @@ export const useCategory = () => {
 				catLevel: 2,
 			});
 		});
+
 		data?.thirdCategories?.forEach((thirdCat) => {
 			newRows.push({
 				id: thirdCat.third_id,
@@ -101,13 +115,16 @@ export const useCategory = () => {
 				catLevel: 3,
 			});
 		});
+
 		return newRows;
 	};
+
 	useEffect(() => {
 		const newRows = dataProcessor(data);
 		setRows(newRows);
 		setFilteredRows(newRows);
 	}, [data]);
+
 	const handleChange = (e) => {
 		searchTermRef.current = e.target.value;
 		const filtered = rows.filter((row) =>
@@ -125,28 +142,26 @@ export const useCategory = () => {
 		2: `${url}sub-category`,
 		3: `${url}third-category`,
 	};
+
 	const deleteCategory = async (categoryId, categoryLevel) => {
 		const endpoint = `${CATEGORY_ENDPOINTS[categoryLevel]}/${categoryId}`;
-		console.log(endpoint);
-		instance
-			.delete(endpoint)
-			.then((res) => {
-				setIsDeleteItem(false);
-			})
-			.catch((err) => {
-				console.log(err);
-				// console.error('Error deleting category:', err.message);
-				// Throw error so the calling function (handleDelete) can catch it too
-				throw err;
-			});
+		try {
+			await instance.delete(endpoint);
+			fetchCategory();
+		} catch (error) {
+			console.log(error);
+		}
 	};
+
 	const handleDelete = (row) => {
 		setIsDeleteItem(true);
 		setCategory(row);
 	};
+
 	const handleClose = () => {
 		setIsDeleteItem(false);
 	};
+
 	const toggleDelete = async () => {
 		let cat = category;
 		try {
@@ -155,9 +170,11 @@ export const useCategory = () => {
 			console.error('There was an error deleting the category:', error.message);
 		}
 	};
+
 	return {
 		data,
 		info,
+		fetchCategory,
 		isNewCategory,
 		toggleCategory,
 		onSubmit,

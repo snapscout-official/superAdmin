@@ -4,6 +4,7 @@ import {
 	setProdInfo,
 	setProductData,
 } from '../redux/features/product/productSlice';
+import { useCategory } from './CategoryHooks';
 import useAuth from './useAuth';
 
 export const useProduct = () => {
@@ -25,18 +26,23 @@ export const useProduct = () => {
 	const toggleProduct = () => {
 		setIsNewProduct(!isNewProduct);
 	};
+	const { fetchCategory } = useCategory();
+
+	const fetchProducts = async () => {
+		try {
+			const response = await instance.get(`${url}products`);
+			dispatch(
+				setProductData({
+					products: response.data.data,
+				})
+			);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	useEffect(() => {
-		instance
-			.get(`${url}products`)
-			.then((res) => {
-				dispatch(
-					setProductData({
-						products: res.data.data,
-					})
-				);
-				console.log(res.data);
-			})
-			.catch((err) => console.log(err));
+		fetchProducts();
+		fetchCategory();
 	}, [isNewProduct, isDeleteItem]);
 
 	const onSubmit = (e) => {
@@ -65,19 +71,15 @@ export const useProduct = () => {
 			return;
 		}
 		console.log(url + 'add-product');
-		// Make a POST request to your backend endpoint
 		instance
 			.post(`${url}add-product`, formData)
 			.then((response) => {
-				console.log(response.data);
-				// Handle success - maybe update your state, show a success message, etc.
+				console.log(response);
 			})
 			.catch((error) => {
 				console.error('There was an error!', error);
-				// Handle error - show error message, etc.
 			});
 
-		// Clear the input field and reset the form state
 		textFieldRef.current.value = '';
 		dispatch(
 			setProdInfo({
@@ -163,7 +165,6 @@ export const useProduct = () => {
 		setIsView(!isView);
 	};
 	return {
-		data,
 		catData,
 		info,
 		isNewProduct,
@@ -176,7 +177,6 @@ export const useProduct = () => {
 		selectedRow,
 		isDeleteItem,
 		searchTermRef,
-		product,
 		handleChange,
 		handleDelete,
 		toggleClose,

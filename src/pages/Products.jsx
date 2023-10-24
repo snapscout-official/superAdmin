@@ -11,7 +11,6 @@ import DeleteModal from '../components/modal/Delete';
 export default function Products() {
 	const dispatch = useDispatch();
 	const {
-		data,
 		catData,
 		info,
 		isNewProduct,
@@ -24,7 +23,6 @@ export default function Products() {
 		selectedRow,
 		isDeleteItem,
 		searchTermRef,
-		product,
 		handleChange,
 		handleDelete,
 		toggleClose,

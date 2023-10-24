@@ -22,6 +22,8 @@
 
 ### 10-22-23
 
+- **Steps made**
+  - **Step 2:** started to build the software into chunks
 - **Realizations**
   - The `Dashboard` page have too much `fixed` height and width
   - `Writing` the `software` using `pen and paper` is `helpful`
@@ -30,4 +32,17 @@
 
 ### 10-23-23
 
+- **Steps made**
+  - **Step 2:** continuation and finalization
 - **Realizations**
+  - Finalized the `chunking` of the `application` with the created new `file structure`
+
+---
+
+### 10-23-23
+
+- **Steps made**
+  - **Step 3:** improvement on the hooks
+- **Realizations**
+  - Tried to use the `redux thunk middleware` for the `efficiency` of the `data globalization` but it seems to be `overkill`
+  - Finalized it but it could still be improved in the future

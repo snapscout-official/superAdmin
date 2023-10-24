@@ -24,18 +24,20 @@ export const useProdSpecs = ({ product }) => {
 		setEditProduct(!editProduct);
 	};
 
-	// trial
+	const fetchProduct = async () => {
+		try {
+			const response = await instance.get(`${url}product-spec/${product.id}`);
+			dispatch(
+				setProductData({
+					product: response.data,
+				})
+			);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	useEffect(() => {
-		instance
-			.get(`${url}product-spec/${product.id}`)
-			.then((res) => {
-				dispatch(
-					setProductData({
-						product: res.data,
-					})
-				);
-			})
-			.catch((err) => console.log(err));
+		fetchProduct();
 	}, [addSpecs, isDeleteItem]);
 
 	const toggleButton = () => {
@@ -54,9 +56,7 @@ export const useProdSpecs = ({ product }) => {
 		};
 		instance
 			.post(`${url}add-spec/${product.id}`, formData)
-			.then((res) => {
-				setAddSpecs(false);
-			})
+			.then((res) => {})
 			.catch((err) => {
 				console.log(err);
 				// console.error('Error deleting category:', err.message);
@@ -65,14 +65,13 @@ export const useProdSpecs = ({ product }) => {
 			});
 		handleUndo();
 		setPropertyValues(['']);
+		fetchProduct();
 	};
 	const deleteProductSPecs = async (id) => {
 		const endpoint = `${url}product-spec/${data.product_id}/${id}`;
 		instance
 			.delete(endpoint)
-			.then((res) => {
-				setIsDeleteItem(false);
-			})
+			.then((res) => {})
 			.catch((err) => {
 				console.log(err);
 				throw err;
@@ -90,6 +89,7 @@ export const useProdSpecs = ({ product }) => {
 		let prodSpec = productSpec;
 		try {
 			await deleteProductSPecs(prodSpec);
+			fetchProduct();
 		} catch (error) {
 			console.error('There was an error deleting the product:', error.message);
 		}
