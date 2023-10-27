@@ -33,7 +33,7 @@ export const useProdSpecs = ({ product }) => {
 				})
 			);
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 		}
 	};
 	useEffect(() => {
@@ -58,7 +58,6 @@ export const useProdSpecs = ({ product }) => {
 			.post(`${url}add-spec/${product.id}`, formData)
 			.then((res) => {})
 			.catch((err) => {
-				console.log(err);
 				// console.error('Error deleting category:', err.message);
 				// Throw error so the calling function (handleDelete) can catch it too
 				throw err;
@@ -73,7 +72,7 @@ export const useProdSpecs = ({ product }) => {
 			.delete(endpoint)
 			.then((res) => {})
 			.catch((err) => {
-				console.log(err);
+				// console.log(err);
 				throw err;
 			});
 	};
@@ -87,12 +86,12 @@ export const useProdSpecs = ({ product }) => {
 	};
 	const toggleDelete = async () => {
 		let prodSpec = productSpec;
-		console.log(prodSpec);
+		// console.log(prodSpec);
 		try {
 			await deleteProductSPecs(prodSpec);
 			fetchProduct();
 		} catch (error) {
-			console.error('There was an error deleting the product:', error.message);
+			// console.error('There was an error deleting the product:', error.message);
 		}
 	};
 	return {

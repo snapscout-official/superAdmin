@@ -16,7 +16,7 @@ export default function App() {
 				<Route path='/category' element={<Category />} />
 				<Route path='/product' element={<Product />} />
 				<Route path='/settings' element={<Settings />} />
-				<Route path='*' element={<NotFound />} />
+				<Route path='/*' element={<NotFound />} />
 			</Routes>
 		</main>
 	);
