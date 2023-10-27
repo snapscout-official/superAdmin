@@ -6,6 +6,7 @@ import { useCategory } from '../context/CategoryHooks';
 import { useDispatch } from 'react-redux';
 import DeleteModal from '../components/modal/Delete';
 import { Trash2 } from 'lucide-react';
+import Spinner from '../components/Spinner';
 
 export default function Category() {
 	const dispatch = useDispatch();
@@ -13,6 +14,7 @@ export default function Category() {
 		data,
 		info,
 		isNewCategory,
+		isLoading,
 		toggleCategory,
 		onSubmit,
 		handleUndo,
@@ -34,6 +36,7 @@ export default function Category() {
 					toggleClose={handleClose}
 				/>
 			)}
+			{isLoading && <Spinner />}
 			<div className='flex justify-between items-center'>
 				<h1 className='text-4xl font-bold'>Categories Catalogue</h1>
 				<img src={Info} alt='Info Icon' />

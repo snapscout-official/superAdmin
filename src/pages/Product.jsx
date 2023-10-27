@@ -134,16 +134,16 @@ export default function Product({ product, toggleView }) {
 							</thead>
 							<tbody>
 								{data?.specs?.map((row) => (
-									<tr key={row.id}>
-										<td className='py-5'>{row.spec_name}</td>
+									<tr key={row.code}>
+										<td className='py-5'>{row.specs_name}</td>
 										<td className='py-5 flex gap-2'>
-											{row.values.map((val, valIndex) => (
-												<h1 key={`${valIndex}`}>{val.value}</h1>
+											{row.values.map((val) => (
+												<h1 key={val.id}>{val.spec_value}</h1>
 											))}
 										</td>
 										<td className='py-5'>
 											<button
-												onClick={() => handleDelete(row.id)}
+												onClick={() => handleDelete(row.code)}
 												className='text-red-500 hover:text-red-700'
 												aria-label='Delete'>
 												<Trash2 />

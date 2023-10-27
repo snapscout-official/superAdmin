@@ -19,6 +19,7 @@ export const useCategory = () => {
 	const [filteredRows, setFilteredRows] = useState([]);
 	const [isDeleteItem, setIsDeleteItem] = useState(false);
 	const [category, setCategory] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	const searchTermRef = useRef('');
 
@@ -47,6 +48,7 @@ export const useCategory = () => {
 
 	const onSubmit = (event) => {
 		event.preventDefault();
+		setIsLoading(true);
 		instance
 			.post(`${url}create-category`, {
 				parentCategory: info.selectedParent,
@@ -68,6 +70,7 @@ export const useCategory = () => {
 			})
 		);
 		setIsNewCategory(false);
+		setIsLoading(false);
 	};
 
 	const handleUndo = () => {
@@ -121,8 +124,10 @@ export const useCategory = () => {
 
 	useEffect(() => {
 		const newRows = dataProcessor(data);
+		setIsLoading(true);
 		setRows(newRows);
 		setFilteredRows(newRows);
+		setIsLoading(false);
 	}, [data]);
 
 	const handleChange = (e) => {
@@ -164,11 +169,13 @@ export const useCategory = () => {
 
 	const toggleDelete = async () => {
 		let cat = category;
+		setIsLoading(true);
 		try {
 			await deleteCategory(cat.id, cat.catLevel);
 		} catch (error) {
 			console.error('There was an error deleting the category:', error.message);
 		}
+		setIsLoading(false);
 	};
 
 	return {
@@ -176,6 +183,7 @@ export const useCategory = () => {
 		info,
 		fetchCategory,
 		isNewCategory,
+		isLoading,
 		toggleCategory,
 		onSubmit,
 		handleUndo,

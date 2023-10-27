@@ -26,7 +26,7 @@ export const useProdSpecs = ({ product }) => {
 
 	const fetchProduct = async () => {
 		try {
-			const response = await instance.get(`${url}product-spec/${product.id}`);
+			const response = await instance.get(`${url}product-specs/${product.id}`);
 			dispatch(
 				setProductData({
 					product: response.data,
@@ -87,6 +87,7 @@ export const useProdSpecs = ({ product }) => {
 	};
 	const toggleDelete = async () => {
 		let prodSpec = productSpec;
+		console.log(prodSpec);
 		try {
 			await deleteProductSPecs(prodSpec);
 			fetchProduct();
