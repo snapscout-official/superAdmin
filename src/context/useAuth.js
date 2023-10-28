@@ -22,7 +22,7 @@ export default function useAuth() {
 			localStorage.setItem('accessToken', res.data.accessToken);
 			return { success: true };
 		} catch (err) {
-			console.log(err.response);
+			// console.log(err.response);
 			return { success: false, message: err.response.data.error };
 		}
 	};
@@ -51,9 +51,23 @@ export default function useAuth() {
 				setIsUnauthorized(true);
 			}
 		} catch (error) {
-			console.log(error); // Handle error
+			// console.log(error); // Handle error
 		}
 	};
+	const logout = () => {
+		// 1. Remove the access token from local storage
+		localStorage.removeItem('accessToken');
+
+		// 2. Reset the axios instance authorization header
+		instance.defaults.headers['Authorization'] = '';
+
+		// 3. Optionally, you can call a backend logout endpoint to invalidate the token server-side
+		// await instance.post(`${url}logout`);
+
+		// Navigate to the home page or login page
+		navigate('/');
+	};
+
 	return {
 		login,
 		instance,
@@ -63,5 +77,6 @@ export default function useAuth() {
 		passwordRef,
 		toggleClose,
 		submitForm,
+		logout,
 	};
 }

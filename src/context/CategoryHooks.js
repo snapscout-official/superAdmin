@@ -38,7 +38,7 @@ export const useCategory = () => {
 				})
 			);
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 		}
 	};
 
@@ -57,7 +57,7 @@ export const useCategory = () => {
 			})
 			.then(() => fetchCategory())
 			.catch((err) => {
-				console.log(err);
+				// console.log(err);
 			});
 
 		fieldRef.current.value = '';
@@ -154,7 +154,7 @@ export const useCategory = () => {
 			await instance.delete(endpoint);
 			fetchCategory();
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 		}
 	};
 
@@ -173,7 +173,7 @@ export const useCategory = () => {
 		try {
 			await deleteCategory(cat.id, cat.catLevel);
 		} catch (error) {
-			console.error('There was an error deleting the category:', error.message);
+			// console.error('There was an error deleting the category:', error.message);
 		}
 		setIsLoading(false);
 	};

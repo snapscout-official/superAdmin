@@ -37,7 +37,7 @@ export const useProduct = () => {
 				})
 			);
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 		}
 	};
 	useEffect(() => {
@@ -54,7 +54,6 @@ export const useProduct = () => {
 				description: 'Your product description',
 				subCategoryId: info.selectedSub,
 			};
-			console.log(formData);
 		} else {
 			formData = {
 				product_name: textFieldRef.current.value,
@@ -62,22 +61,20 @@ export const useProduct = () => {
 				thirdCategoryId: info.selectedThird,
 			};
 		}
-		console.log(info);
-		if (info.selectedParent === null) {
+=		if (info.selectedParent === null) {
 			alert('Please select a parent category.');
 			return;
 		} else if (info.selectedSub === null) {
 			alert('Please at least select a sub category.');
 			return;
 		}
-		console.log(url + 'add-product');
 		instance
 			.post(`${url}add-product`, formData)
 			.then((response) => {
-				console.log(response);
+				// console.log(response);
 			})
 			.catch((error) => {
-				console.error('There was an error!', error);
+				// console.error('There was an error!', error);
 			});
 
 		textFieldRef.current.value = '';
@@ -137,10 +134,10 @@ export const useProduct = () => {
 		instance
 			.delete(endpoint)
 			.then((res) => {
-				console.log(res.data.message);
+				// console.log(res.data.message);
 			})
 			.catch((err) => {
-				console.log(err);
+				// console.log(err);
 				throw err;
 			});
 		setIsDeleteItem(false);
@@ -157,7 +154,7 @@ export const useProduct = () => {
 		try {
 			await deleteProduct(prod.id);
 		} catch (error) {
-			console.error('There was an error deleting the product:', error.message);
+			// console.error('There was an error deleting the product:', error.message);
 		}
 	};
 	const toggleView = (row) => {
