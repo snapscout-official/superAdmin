@@ -61,7 +61,7 @@ export const useProduct = () => {
 				thirdCategoryId: info.selectedThird,
 			};
 		}
-=		if (info.selectedParent === null) {
+		if (info.selectedParent === null) {
 			alert('Please select a parent category.');
 			return;
 		} else if (info.selectedSub === null) {
